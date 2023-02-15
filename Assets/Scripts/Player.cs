@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
    public int health = 100;
    public GameObject BulletPrefab;
     public float BulletSpeed = 10;
-  
+  GameManager gameManager;
    
    float horizontal;
    float vertical;
@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        GameObject go = GameObject.FindGameObjectWithTag("GameController");
+        gameManager = go.GetComponent<GameManager>();
         body = GetComponent<Rigidbody2D>();
     }
 
@@ -62,6 +64,7 @@ public class Player : MonoBehaviour
 
             health -= enemy.Damage;
             Destroy(collision.gameObject);
+            gameManager.RecordEnemyDestroyed();
 
             if (health <= 0)
             {
