@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     GameManager gameManager;
     Rigidbody2D body;
     Vector2 direction;
+
+    public bool ShouldAvoid = true;
+    public float avoidanceDistance = 5;
   
     private void Start()
     {
@@ -26,7 +29,16 @@ public class Enemy : MonoBehaviour
         direction = playerTransform.position - transform.position;
         direction.Normalize();
         body.velocity = direction * MovementSpeed;
-        transform.up = direction;
+        transform.up = direction;;
+        float closeness = Vector2.Distance(playerTransform.position, transform.position);
+
+        if (ShouldAvoid == true & closeness <= 5 )
+        {
+            MovementSpeed = -1;
+        }
+        
+       
+       
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -37,4 +49,5 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
 }

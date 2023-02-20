@@ -8,7 +8,12 @@ public class Player : MonoBehaviour
    public int health = 100;
    public GameObject BulletPrefab;
     public float BulletSpeed = 10;
-  GameManager gameManager;
+    GameManager gameManager;
+    public TMPro.TMP_Text txtAmmo;
+
+    int ammo = 10;
+    int maxAmmo = 10;
+    float ammoRegenTime = 0.5f;
    
    float horizontal;
    float vertical;
@@ -25,6 +30,8 @@ public class Player : MonoBehaviour
         GameObject go = GameObject.FindGameObjectWithTag("GameController");
         gameManager = go.GetComponent<GameManager>();
         body = GetComponent<Rigidbody2D>();
+
+        InvokeRepeating("RegenAmmo", ammoRegenTime, ammoRegenTime);
     }
 
     void Update()
@@ -45,16 +52,18 @@ public class Player : MonoBehaviour
         direction.Normalize();
         transform.up = direction;
 
-        if(Input.GetButtonDown("Fire1"))
+        if(Input.GetButtonDown("Fire1" )& ammo > 0)
         {
             Shoot();
         }
+        txtAmmo.text = ammo.ToString();
     }
     void Shoot()
     {
         GameObject bullet = Instantiate(BulletPrefab, transform.position, Quaternion.identity);
         Rigidbody2D body = bullet.GetComponent<Rigidbody2D>();
         body.velocity = direction * BulletSpeed;
+        ammo--;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -70,6 +79,14 @@ public class Player : MonoBehaviour
             {
                 Application.Quit();
             }
+        }
+    }
+    void RegenAmmo ()
+    {
+        if (ammo < 10)
+        {
+            ammo++;
+            
         }
     }
 }

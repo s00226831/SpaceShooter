@@ -138,3 +138,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 5
   Damage: 1
+  ShouldAvoid: 0
+  avoidanceDistance: 5
